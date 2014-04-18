@@ -24,3 +24,64 @@ http://arduino.cc/en/Guide/Libraries
 
 Step 4: Load an example to your Arduino board.
 
+
+How to use
+----------
+
+
+The library structure and dependency:
+YourSketch.ino -> RBL_nRF8001 -> Nordic's BLE
+
+Also, you can use Nordic's library directly such as:
+YourSketch.ino -> Nordic's BLE
+
+Nordic also provides many examples and tutorials.
+
+Read Nordic's BLE SDK for Arduino for details with tutorials to write your own services, you can use this one directly:<br/>
+https://github.com/NordicSemiconductor/ble-sdk-arduino
+
+There are two Apps available from the Apple AppStore:<br/>
+
+1. BLE Arduino<br>
+It is for the BLEFirmata sketch and works for iOS 6
+
+2. BLE Controller<br>
+It is for the BLEController sketch and works for iOS 7
+
+
+Change the BLE advertising name
+-------------------------------
+
+Before calling to ble_begin(), you can make use of ble_set_name("My BLE") to change the name.
+
+
+Supported Boards
+----------------
+
+Arduino UNO (328p), Leonardo (32u4), MEGA2560, DUE and their compatible.<br/>
+ChipKit Uno32<br/>
+
+
+License
+=======
+
+Copyright (c) 2012-2014 RedBearLab
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal 
+in the Software without restriction, including without limitation the rights 
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+

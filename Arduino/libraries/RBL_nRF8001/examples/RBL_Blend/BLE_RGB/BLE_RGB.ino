@@ -1,7 +1,7 @@
 #include "Adafruit_NeoPixel.h"
 #include <SPI.h>
 #include <boards.h>
-#include <ble_shield.h>
+#include <RBL_nRF8001.h>
 #include <services.h>
 
 // Parameter 1 = number of pixels in strip

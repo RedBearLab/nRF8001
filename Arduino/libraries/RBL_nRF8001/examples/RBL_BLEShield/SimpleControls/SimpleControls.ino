@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //"services.h/spi.h/boards.h" is needed in every new project
 #include <SPI.h>
 #include <boards.h>
-#include <ble_shield.h>
+#include <RBL_nRF8001.h>
 #include <services.h>
 #include <Servo.h> 
  
@@ -32,7 +32,7 @@ void setup()
   //ble_set_pins(3, 2);
   
   // Set your BLE Shield name here, max. length 10
-  //ble_set_name("My Shield");
+  //ble_set_name("My Name");
   
   // Init. and start BLE library.
   ble_begin();

@@ -26,7 +26,7 @@ Step 4: Load an example to your Arduino board.
 
 
 How to use
-----------
+==========
 
 
 The library structure and dependency:
@@ -49,14 +49,14 @@ It is for the BLEFirmata sketch and works for iOS 6
 It is for the BLEController sketch and works for iOS 7
 
 
-Change the BLE advertising name
--------------------------------
+Change BLE Advertising Name
+===========================
 
 Before calling to ble_begin(), you can make use of ble_set_name("My BLE") to change the name.
 
 
 Supported Boards
-----------------
+================
 
 Arduino UNO (328p), Leonardo (32u4), MEGA2560, DUE and their compatible.<br/>
 ChipKit Uno32<br/>

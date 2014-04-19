@@ -16,7 +16,7 @@
 
 #include "BLEFirmata.h"
 #include "HardwareSerial.h"
-#include "ble_shield.h"
+#include <RBL_nRF8001.h>
 
 extern "C" {
 #include <string.h>

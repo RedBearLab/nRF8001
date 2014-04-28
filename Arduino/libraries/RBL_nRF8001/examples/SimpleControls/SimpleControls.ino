@@ -17,10 +17,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <services.h>
 #include <Servo.h> 
  
-#define DIGITAL_OUT_PIN    4
-#define DIGITAL_IN_PIN     5
-#define PWM_PIN            6
-#define SERVO_PIN          7
+#define DIGITAL_OUT_PIN    2
+#define DIGITAL_IN_PIN     A4
+#define PWM_PIN            3
+#define SERVO_PIN          5
 #define ANALOG_IN_PIN      A5
 
 Servo myservo;

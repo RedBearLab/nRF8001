@@ -13,7 +13,7 @@
 #include <Wire.h>
 #include "BLEFirmata.h"
 #include <RBL_nRF8001.h>
-#include <services.h>
+
 /*
  * Firmata is a generic protocol for communicating with microcontrollers
  * from software on a host computer. It is intended to work with

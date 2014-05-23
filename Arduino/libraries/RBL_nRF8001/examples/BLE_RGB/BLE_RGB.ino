@@ -2,7 +2,6 @@
 #include <SPI.h>
 #include <boards.h>
 #include <RBL_nRF8001.h>
-#include <services.h>
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = pin number (most are valid)

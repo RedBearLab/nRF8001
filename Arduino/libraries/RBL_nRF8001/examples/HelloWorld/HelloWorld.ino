@@ -22,7 +22,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <SPI.h>
 #include <boards.h>
 #include <RBL_nRF8001.h>
-#include <services.h> 
 
 void setup()
 {

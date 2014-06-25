@@ -1,7 +1,9 @@
 nRF8001
 =======
 
-Provides API for nRF8001 BLE chip.
+Provides API for nRF8001 BLE chip such as [BLE Shield](http://redbearlab.com/bleshield/) and [Blend Micro](http://redbearlab.com/blendmicro/).
+
+Other 3rd party breakout breads may also be workable.
 
 
 Installation
@@ -60,6 +62,18 @@ Supported Boards
 
 Arduino UNO (328p), Leonardo (32u4), MEGA2560, DUE and their compatible.<br/>
 ChipKit Uno32<br/>
+
+
+Resources
+=========
+
+1. [Nordic nRF8001 SDK for Arduino - Library](https://github.com/NordicSemiconductor/ble-sdk-arduino)
+
+2. [Nordic nRF8001 SDK for Arduino - Forum](https://redbearlab.zendesk.com/forums/21921933-Nordic-nRF8001-SDK-for-Arduino)
+
+3. [Nordic Developer Zone](https://devzone.nordicsemi.com/)
+
+4. [Bluetooth SIG](https://www.bluetooth.org/en-us)
 
 
 License

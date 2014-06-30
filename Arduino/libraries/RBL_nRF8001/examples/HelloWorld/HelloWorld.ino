@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 void setup()
 {
   //  
-  // For BLE Shield:
+  // For BLE Shield and Blend:
   //   Default pins set to 9 and 8 for REQN and RDYN
   //   Set your REQN and RDYN here before ble_begin() if you need
   //
@@ -36,8 +36,8 @@ void setup()
   //
   //ble_set_pins(3, 2);
   
-  // Set your BLE Shield name here, max. length 10
-  ble_set_name("BlendMicro");
+  // Set your BLE advertising name here, max. length 10
+  //ble_set_name("My BLE");
   
   // Init. and start BLE library.
   ble_begin();

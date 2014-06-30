@@ -26,6 +26,8 @@ static hal_aci_data_t setup_msgs[NB_SETUP_MESSAGES] PROGMEM = SETUP_MESSAGES_CON
 
 #if defined(BLEND_MICRO)
 static char device_name[11] = "BlendMicro";
+#elif defined(BLEND)
+static char device_name[11] = "Blend     ";
 #else
 static char device_name[11] = "BLE Shield";
 #endif

@@ -7,6 +7,9 @@
  *
  */
 
+// Set your BLE Shield name here, max. length 10
+#define BLE_NAME "BlendMicro"
+
 #include <boards.h>
 #include <SPI.h>
 #include <Servo.h>
@@ -576,22 +579,28 @@ void systemResetCallback()
   // otherwise, pins default to digital output
   for (byte i=0; i < TOTAL_PINS; i++) {
 
+#if defined(BLEND_MICRO)
+    // skip pin 4, 6, 7 for BlendMicro BLE controll
+    if ((i == 4) || (i == 6) || (i == 7))
+      continue;
+#else
     // skip pin 8, 9 for BLE Shield
     if ((i == 8) || (i == 9))
       continue;
+#endif
     
     // skip SPI pins
     if ( (i==MOSI) || (i==MISO) || (i==SCK) || (i==SS) )
       continue;
      
-     // Default all to digital pins  
-//    if (IS_PIN_ANALOG(i)) {
+    // Default all to digital pins
+    if (IS_PIN_ANALOG(i)) {
       // turns off pullup, configures everything
-//      setPinModeCallback(i, ANALOG);
-//    } else {
+      setPinModeCallback(i, ANALOG);
+    } else {
       // sets the output to 0, configures portConfigInputs
-      setPinModeCallback(i, OUTPUT);
-//    }
+      // setPinModeCallback(i, OUTPUT);
+    }
   }
   // by default, do not report any analog inputs
   analogInputsToReport = 0;
@@ -629,8 +638,7 @@ void setup()
   // Set your REQN and RDYN here before ble_begin() if you need
   //ble_set_pins(3, 2);
   
-  // Set your BLE Shield name here, max. length 10
-  //ble_set_name("My Name");
+  ble_set_name(BLE_NAME);
   
   // Init. BLE and start BLE library.
   ble_begin();

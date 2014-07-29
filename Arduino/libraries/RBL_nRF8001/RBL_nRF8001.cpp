@@ -132,7 +132,12 @@ void ble_begin()
     aci_state.aci_pins.spi_clock_divider     = SPI_CLOCK_DIV8;
 #endif
 
+#if defined(BLEND_MICRO)
+    aci_state.aci_pins.reset_pin             = 4;
+#else
     aci_state.aci_pins.reset_pin             = UNUSED;
+#endif
+
     aci_state.aci_pins.active_pin            = UNUSED;
     aci_state.aci_pins.optional_chip_sel_pin = UNUSED;
 

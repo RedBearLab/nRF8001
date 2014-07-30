@@ -31,6 +31,9 @@ static char device_name[11] = "Blend     ";
 #else
 static char device_name[11] = "BLE Shield";
 #endif
+		
+static uint16_t Adv_Timeout = 0;	// Advertising all the time
+static uint16_t Adv_Interval = 0x0050; /* advertising interval 50ms
 
 /*aci_struct that will contain :
 total initial credits
@@ -97,10 +100,12 @@ void ble_set_pins(uint8_t reqn, uint8_t rdyn)
 
 void ble_begin()
 {
+#if !defined(__SAM3X8E__)
     spi_old = SPCR;
     SPI.setBitOrder(LSBFIRST);
-    SPI.setClockDivider(SPI_CLOCK_DIV8);
+		SPI.setClockDivider(SPI_CLOCK_DIV8);
     SPI.setDataMode(SPI_MODE0);
+#endif
 
      /* Point ACI data structures to the the setup data that the nRFgo studio generated for the nRF8001 */
     if (NULL != services_pipe_type_mapping)
@@ -119,7 +124,7 @@ void ble_begin()
     Tell the ACI library, the MCU to nRF8001 pin connections.
     The Active pin is optional and can be marked UNUSED
     */
-    aci_state.aci_pins.board_name = REDBEARLAB_SHIELD_V1_1; //See board.h for details
+    aci_state.aci_pins.board_name = REDBEARLAB_SHIELD_V2; //See board.h for details
     aci_state.aci_pins.reqn_pin   = reqn_pin;
     aci_state.aci_pins.rdyn_pin   = rdyn_pin;
     aci_state.aci_pins.mosi_pin   = MOSI;
@@ -132,12 +137,7 @@ void ble_begin()
     aci_state.aci_pins.spi_clock_divider     = SPI_CLOCK_DIV8;
 #endif
 
-#if defined(BLEND_MICRO)
-    aci_state.aci_pins.reset_pin             = 4;
-#else
     aci_state.aci_pins.reset_pin             = UNUSED;
-#endif
-
     aci_state.aci_pins.active_pin            = UNUSED;
     aci_state.aci_pins.optional_chip_sel_pin = UNUSED;
 
@@ -150,8 +150,10 @@ void ble_begin()
     //The second parameter is for turning debug printing on for the ACI Commands and Events so they be printed on the Serial
     lib_aci_init(&aci_state, false);
 
+#if !defined(__SAM3X8E__)
     SPCR = spi_old;
     SPI.begin();
+#endif
 }
 
 static volatile byte ack = 0;
@@ -223,6 +225,14 @@ unsigned char ble_busy()
     }
 }
 
+void ble_reset(uint8_t reset_pin)
+{
+	pinMode(reset_pin, OUTPUT);
+	digitalWrite(reset_pin, HIGH);
+	digitalWrite(reset_pin, LOW);
+	digitalWrite(reset_pin, HIGH);
+}
+
 static void process_events()
 {
     static bool setup_required = false;
@@ -254,7 +264,7 @@ static void process_events()
                         else
                         {
                             lib_aci_set_local_data(&aci_state, PIPE_GAP_DEVICE_NAME_SET , (uint8_t *)&device_name , strlen(device_name));
-                            lib_aci_connect(180/* in seconds */, 0x0050 /* advertising interval 50ms*/);
+                            lib_aci_connect(Adv_Timeout/* in seconds */, Adv_Interval /* advertising interval 50ms*/);
                             Serial.println(F("Advertising started"));
                         }
                         break;
@@ -308,7 +318,7 @@ static void process_events()
                 is_connected = 0;
                 ack = 1;
                 Serial.println(F("Evt Disconnected/Advertising timed out"));
-                lib_aci_connect(30/* in seconds */, 0x0050 /* advertising interval 100ms*/);
+                lib_aci_connect(Adv_Timeout/* in seconds */, Adv_Interval /* advertising interval 50ms*/);
                 Serial.println(F("Advertising started"));
                 break;
 
@@ -369,7 +379,7 @@ static void process_events()
                   Serial.write(aci_evt->params.hw_error.file_name[counter]); //uint8_t file_name[20];
                 }
                 Serial.println();
-                lib_aci_connect(180/* in seconds */, 0x0050 /* advertising interval 50ms*/);
+                lib_aci_connect(Adv_Timeout/* in seconds */, Adv_Interval /* advertising interval 50ms*/);
                 Serial.println(F("Advertising started"));
                 break;
         }
@@ -396,10 +406,12 @@ static void process_events()
 
 void ble_do_events()
 {
+#if !defined(__SAM3X8E__)
     spi_old = SPCR;
     SPI.setBitOrder(LSBFIRST);
-    SPI.setClockDivider(SPI_CLOCK_DIV8);
+		SPI.setClockDivider(SPI_CLOCK_DIV8);
     SPI.setDataMode(SPI_MODE0);
+#endif
 
     if (lib_aci_is_pipe_available(&aci_state, PIPE_UART_OVER_BTLE_UART_TX_TX))
     {
@@ -449,6 +461,8 @@ void ble_do_events()
     }
     process_events();
 
+#if !defined(__SAM3X8E__)
     SPCR = spi_old;
+#endif
 }
 

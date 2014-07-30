@@ -17,9 +17,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <lib_aci.h>
 #include <aci_setup.h>
 #include <SPI.h>
-
+#if !defined(__SAM3X8E__)
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
+#endif
 
 /* Put the nRF8001 setup in the RAM of the nRF8001.*/
 #include "RBL_services.h"
@@ -45,6 +46,7 @@ unsigned char ble_available();
 unsigned char ble_connected(void);
 void ble_set_pins(uint8_t reqn, uint8_t rdyn);
 unsigned char ble_busy();
+void ble_reset(uint8_t reset_pin);
 
 #endif
 

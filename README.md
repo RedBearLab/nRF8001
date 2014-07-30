@@ -1,5 +1,6 @@
 nRF8001
 =======
+Last updated: 2014/7/30 18:17:53 
 
 Provides API for nRF8001 BLE chip such as [BLE Shield](http://redbearlab.com/bleshield/) and [Blend Micro](http://redbearlab.com/blendmicro/).
 

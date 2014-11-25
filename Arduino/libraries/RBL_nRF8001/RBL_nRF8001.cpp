@@ -55,6 +55,9 @@ static hal_aci_evt_t  aci_data;
 /*Timing change state variable*/
 static bool timing_change_done = false;
 
+/* marks the error state of the ble shield*/
+static bool error_state = false;
+
 /*Initialize the radio_ack. This is the ack received for every transmitted packet.*/
 //static bool radio_ack_pending = false;
 
@@ -106,7 +109,7 @@ void ble_begin()
 		SPI.setClockDivider(SPI_CLOCK_DIV8);
     SPI.setDataMode(SPI_MODE0);
 #endif
-
+    error_state = false;
      /* Point ACI data structures to the the setup data that the nRFgo studio generated for the nRF8001 */
     if (NULL != services_pipe_type_mapping)
     {
@@ -225,12 +228,17 @@ unsigned char ble_busy()
     }
 }
 
+bool ble_error(){
+    return error_state;
+}
+
 void ble_reset(uint8_t reset_pin)
 {
 	pinMode(reset_pin, OUTPUT);
 	digitalWrite(reset_pin, HIGH);
 	digitalWrite(reset_pin, LOW);
 	digitalWrite(reset_pin, HIGH);
+    error_state = false;
 }
 
 static void process_events()
@@ -260,6 +268,7 @@ static void process_events()
                         if (aci_evt->params.device_started.hw_error)
                         {
                             delay(20); //Magic number used to make sure the HW error event is handled correctly.
+                            error_state = true;
                         }
                         else
                         {
@@ -354,6 +363,7 @@ static void process_events()
 
             case ACI_EVT_PIPE_ERROR:
                 //See the appendix in the nRF8001 Product Specication for details on the error codes
+                error_state = true;
                 Serial.print(F("ACI Evt Pipe Error: Pipe #:"));
                 Serial.print(aci_evt->params.pipe_error.pipe_number, DEC);
                 Serial.print(F("  Pipe Error Code: 0x"));
@@ -372,6 +382,7 @@ static void process_events()
 
             case ACI_EVT_HW_ERROR:
                 Serial.print(F("HW error: "));
+                error_state = true;
                 Serial.println(aci_evt->params.hw_error.line_num, DEC);
 
                 for(uint8_t counter = 0; counter <= (aci_evt->len - 3); counter++)

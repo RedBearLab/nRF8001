@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <lib_aci.h>
 #include <aci_setup.h>
 #include <SPI.h>
-#if !defined(__SAM3X8E__)
+#if ( !defined(__SAM3X8E__) && !defined(__PIC32MX__) )
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 #endif

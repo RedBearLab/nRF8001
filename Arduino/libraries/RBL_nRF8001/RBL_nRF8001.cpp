@@ -100,7 +100,7 @@ void ble_set_pins(uint8_t reqn, uint8_t rdyn)
 
 void ble_begin()
 {
-#if !defined(__SAM3X8E__)
+#if ( !defined(__SAM3X8E__) && !defined(__PIC32MX__) )
     spi_old = SPCR;
     SPI.setBitOrder(LSBFIRST);
 		SPI.setClockDivider(SPI_CLOCK_DIV8);
@@ -150,7 +150,7 @@ void ble_begin()
     //The second parameter is for turning debug printing on for the ACI Commands and Events so they be printed on the Serial
     lib_aci_init(&aci_state, false);
 
-#if !defined(__SAM3X8E__)
+#if ( !defined(__SAM3X8E__) && !defined(__PIC32MX__) )
     SPCR = spi_old;
     SPI.begin();
 #endif
@@ -406,7 +406,7 @@ static void process_events()
 
 void ble_do_events()
 {
-#if !defined(__SAM3X8E__)
+#if ( !defined(__SAM3X8E__) && !defined(__PIC32MX__) )
     spi_old = SPCR;
     SPI.setBitOrder(LSBFIRST);
 		SPI.setClockDivider(SPI_CLOCK_DIV8);
@@ -461,7 +461,7 @@ void ble_do_events()
     }
     process_events();
 
-#if !defined(__SAM3X8E__)
+#if ( !defined(__SAM3X8E__) && !defined(__PIC32MX__) )
     SPCR = spi_old;
 #endif
 }

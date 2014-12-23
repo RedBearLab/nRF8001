@@ -31,6 +31,10 @@
   You should have received a copy of the GNU Lesser General Public
   License along with NeoPixel.  If not, see
   <http://www.gnu.org/licenses/>.
+  
+  --------------------------------------------------------------------
+  This library does not support chipKIT and DUE, only support AVR.
+  
   --------------------------------------------------------------------*/
 
 #include "Adafruit_NeoPixel.h"

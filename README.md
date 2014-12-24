@@ -65,6 +65,75 @@ Arduino UNO (328p), Leonardo (32u4), MEGA2560, DUE and their compatible.<br/>
 ChipKit Uno32<br/>
 
 
+API
+===
+
+###ble_begin
+
+```
+void ble_begin();
+```
+
+* ble_begin starts the BLE stack and broadcasting the advertising packet 
+
+###ble_set_name
+
+void ble_set_name(char *name);
+
+* Call ble_set_name by giving name before calling to ble_begin to set the broadcasting name. 
+
+###ble_write
+```
+void ble_write(unsigned char data);
+```
+
+* ble_write sends a single byte data to the BLE Central.
+
+### ble_write_bytes
+
+```
+void ble_write_bytes(unsigned char *data, unsigned char len);
+```
+
+* ble_write_bytes writes an array of bytes in data with length in len.
+
+### ble_do_events
+
+```
+void ble_do_events();
+```
+
+* ble_do_events allows the BLE to process its events, if data is pending, it will be sent out.
+
+### ble_read
+
+```
+int ble_read();
+```
+
+* ble_read reads a byte from BLE Central, It returns -1 if nothing to be read.
+
+```
+unsigned char ble_available();
+```
+
+```
+unsigned char ble_connected(void);
+```
+
+```
+void ble_set_pins(uint8_t reqn, uint8_t rdyn);
+```
+
+```
+unsigned char ble_busy();
+```
+
+```
+void ble_reset(uint8_t reset_pin);
+```
+
+
 Resources
 =========
 

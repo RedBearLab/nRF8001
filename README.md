@@ -2,7 +2,7 @@ nRF8001
 =======
 Last updated: 2014/7/30 18:17:53 
 
-Provides API for nRF8001 BLE chip such as [BLE Shield](http://redbearlab.com/bleshield/) and [Blend Micro](http://redbearlab.com/blendmicro/).
+Provides simple API for nRF8001 BLE chip such as [BLE Shield](http://redbearlab.com/bleshield/) and [Blend Micro](http://redbearlab.com/blendmicro/) to exchange data via the RBL TxRx Service to BLE Central device (e.g. iPhone 5).
 
 Other 3rd party breakout breads may also be workable.
 
@@ -68,7 +68,7 @@ ChipKit Uno32<br/>
 API
 ===
 
-###ble_begin
+### ble_begin
 
 ```
 void ble_begin();
@@ -76,13 +76,15 @@ void ble_begin();
 
 * ble_begin starts the BLE stack and broadcasting the advertising packet 
 
-###ble_set_name
+### ble_set_name
 
+```
 void ble_set_name(char *name);
+```
 
 * Call ble_set_name by giving name before calling to ble_begin to set the broadcasting name. 
 
-###ble_write
+### ble_write
 ```
 void ble_write(unsigned char data);
 ```
@@ -113,25 +115,43 @@ int ble_read();
 
 * ble_read reads a byte from BLE Central, It returns -1 if nothing to be read.
 
+### ble_available
+
 ```
 unsigned char ble_available();
 ```
+
+### ble_connected
 
 ```
 unsigned char ble_connected(void);
 ```
 
+* ble_connected returns 1 if connected by BLE Central or 0 if not.
+
+### ble_set_pins
+
 ```
 void ble_set_pins(uint8_t reqn, uint8_t rdyn);
 ```
+
+* ble_set_pins is to specify the REQN and RDYN pins to the BLE chip, i.e. the jumper on the BLE Shield.
+
+### ble_busy
 
 ```
 unsigned char ble_busy();
 ```
 
+* ble_busy return the status if the BLE is busy, i.e. it is using the SPI interface. It is for using the SPI for other components at the same time.
+
+### ble_reset
+
 ```
 void ble_reset(uint8_t reset_pin);
 ```
+
+* ble_reset resets the BLE chip using the specified pin, reset_pin
 
 
 Resources

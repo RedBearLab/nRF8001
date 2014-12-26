@@ -233,6 +233,11 @@ void ble_reset(uint8_t reset_pin)
 	digitalWrite(reset_pin, HIGH);
 }
 
+void ble_disconnect(void)
+{
+	lib_aci_disconnect(&aci_state, ACI_REASON_TERMINATE);
+}
+
 static void process_events()
 {
     static bool setup_required = false;

@@ -11,6 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 */
 
+#include <avr/pgmspace.h>
+
 #include "RBL_nRF8001.h"
 
 #ifdef SERVICES_PIPE_TYPE_MAPPING_CONTENT
@@ -22,7 +24,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #endif
 
 /* Store the setup for the nRF8001 in the flash of the AVR to save on RAM */
-static hal_aci_data_t setup_msgs[NB_SETUP_MESSAGES] PROGMEM = SETUP_MESSAGES_CONTENT;
+#if ARDUINO < 150
+static /*const*/ hal_aci_data_t setup_msgs[NB_SETUP_MESSAGES] PROGMEM = SETUP_MESSAGES_CONTENT;
+#else
+static const hal_aci_data_t setup_msgs[NB_SETUP_MESSAGES] PROGMEM = SETUP_MESSAGES_CONTENT;
+#endif
 
 #if defined(BLEND_MICRO)
 static char device_name[11] = "BlendMicro";
@@ -117,7 +123,7 @@ void ble_begin()
         aci_state.aci_setup_info.services_pipe_type_mapping = NULL;
     }
     aci_state.aci_setup_info.number_of_pipes    = NUMBER_OF_PIPES;
-    aci_state.aci_setup_info.setup_msgs         = setup_msgs;
+    aci_state.aci_setup_info.setup_msgs         = (hal_aci_data_t*)setup_msgs;
     aci_state.aci_setup_info.num_setup_msgs     = NB_SETUP_MESSAGES;
 
     /*
@@ -151,8 +157,10 @@ void ble_begin()
     lib_aci_init(&aci_state, false);
 
 #if ( !defined(__SAM3X8E__) && !defined(__PIC32MX__) )
+#if (ARDUINO < 150)
     SPCR = spi_old;
     SPI.begin();
+#endif
 #endif
 }
 

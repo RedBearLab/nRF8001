@@ -31,7 +31,7 @@ static char device_name[11] = "Blend     ";
 #else
 static char device_name[11] = "BLE Shield";
 #endif
-		
+
 static uint16_t Adv_Timeout = 0;	// Advertising all the time
 static uint16_t Adv_Interval = 0x0050; /* advertising interval 50ms
 
@@ -159,7 +159,7 @@ void ble_begin()
 static volatile byte ack = 0;
 
 void ble_write(unsigned char data)
-{	    
+{
     if(tx_buffer_len == MAX_TX_BUFF)
     {
             return;
@@ -199,13 +199,13 @@ unsigned char ble_connected()
 }
 
 void ble_set_name(char *name)
-{       
+{
     unsigned char len=0;
-    
+
     len = strlen(name);
     if(len > 10)
     {
-        Serial.print("the new name is too long");        
+        Serial.print("the new name is too long");
     }
     else
     {

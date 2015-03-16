@@ -12,6 +12,7 @@
 
 #include <boards.h>
 #include <SPI.h>
+#include <EEPROM.h>
 #include <Servo.h>
 #include <Wire.h>
 #include "BLEFirmata.h"

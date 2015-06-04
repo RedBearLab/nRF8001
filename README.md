@@ -1,8 +1,10 @@
+
 nRF8001
 =======
-Last updated: 2014/7/30 18:17:53 
 
-Provides simple API for nRF8001 BLE chip such as [BLE Shield](http://redbearlab.com/bleshield/) and [Blend Micro](http://redbearlab.com/blendmicro/) to exchange data via the RBL TxRx Service to BLE Central device (e.g. iPhone 5).
+Last updated: 2015/06/04 
+
+Provides simple API for nRF8001 BLE chip such as the [BLE Shield](http://redbearlab.com/bleshield/) and [Blend Micro](http://redbearlab.com/blendmicro/) to exchange data via RBL TxRx Service to BLE Central device (e.g. iPhone 5).
 
 Other 3rd party breakout breads may also be workable.
 
@@ -10,20 +12,12 @@ Other 3rd party breakout breads may also be workable.
 Installation
 ============
 
-Step 1: Get latest release of Nordic nRF8001 SDK for Arduino here:<br/>
-https://github.com/NordicSemiconductor/ble-sdk-arduino/releases
+Step 1. You have to see this for installing libraries first.
+http://www.arduino.cc/en/Guide/Libraries
 
-The library folder is "BLE" in this package.
+Step 2: Get latest release of [Nordic nRF8001 SDK for Arduino](https://github.com/Cheong2K/ble-sdk-arduino).
 
-Step 2: Get latest release of RBL nRF8001 API here:<br/>
-https://github.com/RedBearLab/nRF8001/releases
-
-The library folder is "RBL_nRF8001" in this package.
-
-Step 3: Unzip these two packages, import or copy these two libraries, with folder named "BLE" and "RBL_nRF8001" to your Arduino sketchbook folder.
-
-If you do not know how to do, read this:<br/>
-http://arduino.cc/en/Guide/Libraries
+Step 3: Get latest release of [RBL nRF8001 API](https://github.com/RedBearLab/nRF8001/releases).
 
 Step 4: Load an example to your Arduino board.
 
@@ -40,8 +34,7 @@ YourSketch.ino -> Nordic's BLE
 
 Nordic also provides many examples and tutorials.
 
-Read Nordic's BLE SDK for Arduino for details with tutorials to write your own services, you can use this one directly:<br/>
-https://github.com/NordicSemiconductor/ble-sdk-arduino
+Read Nordic's BLE SDK for Arduino for details with tutorials to write your own services.
 
 There are two Apps available from the Apple AppStore:<br/>
 
@@ -85,6 +78,7 @@ void ble_set_name(char *name);
 * Call ble_set_name by giving name before calling to ble_begin to set the broadcasting name. 
 
 ### ble_write
+
 ```
 void ble_write(unsigned char data);
 ```
@@ -120,6 +114,8 @@ int ble_read();
 ```
 unsigned char ble_available();
 ```
+
+* Returns the number of bytes ready for reading.
 
 ### ble_connected
 
@@ -157,7 +153,7 @@ void ble_reset(uint8_t reset_pin);
 Resources
 =========
 
-1. [Nordic nRF8001 SDK for Arduino - Library](https://github.com/NordicSemiconductor/ble-sdk-arduino)
+1. [Nordic nRF8001 SDK for Arduino - Library](https://github.com/Cheong2K/ble-sdk-arduino)
 
 2. [Nordic nRF8001 SDK for Arduino - Forum](https://redbearlab.zendesk.com/forums/21921933-Nordic-nRF8001-SDK-for-Arduino)
 

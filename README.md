@@ -8,6 +8,7 @@ Provides simple API for nRF8001 BLE chip such as the [BLE Shield](http://redbear
 
 Other 3rd party breakout breads may also be workable.
 
+Tested with Arduino IDE 1.6.4 (we will only support this version).
 
 Installation
 ============
@@ -15,9 +16,11 @@ Installation
 Step 1. You have to see this for installing libraries first.
 http://www.arduino.cc/en/Guide/Libraries
 
-Step 2: Get latest release of [Nordic nRF8001 SDK for Arduino](https://github.com/Cheong2K/ble-sdk-arduino).
+* Please use the method - "Importing a .zip Library" at this moment.
 
-Step 3: Get latest release of [RBL nRF8001 API](https://github.com/RedBearLab/nRF8001/releases).
+Step 2: Get latest release of [Nordic nRF8001 SDK for Arduino](https://github.com/Cheong2K/ble-sdk-arduino/archive/RBL.zip).
+
+Step 3: Get latest release of [RBL nRF8001 API](https://github.com/RedBearLab/nRF8001/archive/master.zip).
 
 Step 4: Load an example to your Arduino board.
 

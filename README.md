@@ -13,16 +13,22 @@ Tested with Arduino IDE 1.6.4 (we will only support this version).
 Installation
 ============
 
-Step 1. You have to see this for installing libraries first.
+You have to see this for installing libraries first.
 http://www.arduino.cc/en/Guide/Libraries
 
-* Please use the method - "Importing a .zip Library" at this moment.
+Method 1 - Using Library Manager
 
-Step 2: Get latest release of [Nordic nRF8001 SDK for Arduino](https://github.com/Cheong2K/ble-sdk-arduino/archive/RBL.zip).
+Follow this guide:
 
-Step 3: Get latest release of [RBL nRF8001 API](https://github.com/RedBearLab/nRF8001/archive/master.zip).
+https://github.com/RedBearLab/BLEShield/blob/master/Docs/LibraryManager.pdf
 
-Step 4: Load an example to your Arduino board.
+Method 2 - Manual installation ("Importing a .zip Library")
+
+Step 1: Get the latest release of [Nordic nRF8001 SDK for Arduino](https://github.com/Cheong2K/ble-sdk-arduino/archive/RBL.zip).
+
+Step 2: Get the latest release of [RBL nRF8001 API](https://github.com/RedBearLab/nRF8001/archive/master.zip).
+
+Step 3: Load an example to your Arduino board.
 
 
 How to use

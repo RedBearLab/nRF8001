@@ -48,6 +48,7 @@ void ble_set_pins(uint8_t reqn, uint8_t rdyn);
 unsigned char ble_busy();
 void ble_reset(uint8_t reset_pin);
 void ble_disconnect(void);
+void ble_get_mac_addr(uint8_t *bd_addr);
 
 #endif
 

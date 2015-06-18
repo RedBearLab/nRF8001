@@ -37,6 +37,10 @@ static char device_name[11] = "Blend     ";
 #else
 static char device_name[11] = "BLE Shield";
 #endif
+	
+static uint8_t  			  bd_addr_own[BTLE_DEVICE_ADDRESS_SIZE];
+static aci_bd_addr_type_t  bd_addr_type;  
+static uint8_t				  addr_get = 0;
 
 static uint16_t Adv_Timeout = 0;	// Advertising all the time
 static uint16_t Adv_Interval = 0x0050; /* advertising interval 50ms
@@ -83,6 +87,8 @@ uint8_t rdyn_pin = DEFAULT_RDYN;
 
 static unsigned char spi_old;
 
+static void process_events();
+
 /* Define how assert should function in the BLE library */
 void __ble_assert(const char *file, uint16_t line)
 {
@@ -109,9 +115,11 @@ void ble_begin()
 #if ( !defined(__SAM3X8E__) && !defined(__PIC32MX__) )
     spi_old = SPCR;
     SPI.setBitOrder(LSBFIRST);
-		SPI.setClockDivider(SPI_CLOCK_DIV8);
+	SPI.setClockDivider(SPI_CLOCK_DIV8);
     SPI.setDataMode(SPI_MODE0);
 #endif
+	
+	memset(bd_addr_own, 0x00, BTLE_DEVICE_ADDRESS_SIZE);
 
      /* Point ACI data structures to the the setup data that the nRFgo studio generated for the nRF8001 */
     if (NULL != services_pipe_type_mapping)
@@ -246,6 +254,20 @@ void ble_disconnect(void)
 	lib_aci_disconnect(&aci_state, ACI_REASON_TERMINATE);
 }
 
+void ble_get_mac_addr(uint8_t *bd_addr)
+{
+	if(!addr_get)
+	{
+		lib_aci_get_address();	// Get device's MAC address and address type
+		while(!addr_get)
+		{
+			process_events();
+		}
+	}
+
+	memcpy(bd_addr, bd_addr_own, BTLE_DEVICE_ADDRESS_SIZE);
+}
+
 static void process_events()
 {
     static bool setup_required = false;
@@ -301,6 +323,29 @@ static void process_events()
                     //Store the version and configuration information of the nRF8001 in the Hardware Revision String Characteristic
                     lib_aci_set_local_data(&aci_state, PIPE_DEVICE_INFORMATION_HARDWARE_REVISION_STRING_SET,
                     (uint8_t *)&(aci_evt->params.cmd_rsp.params.get_device_version), sizeof(aci_evt_cmd_rsp_params_get_device_version_t));
+                }
+				else if (ACI_CMD_GET_DEVICE_ADDRESS == aci_evt->params.cmd_rsp.cmd_opcode)
+                {
+					memcpy(bd_addr_own, aci_evt->params.cmd_rsp.params.get_device_address.bd_addr_own, BTLE_DEVICE_ADDRESS_SIZE);
+                    bd_addr_type = aci_evt->params.cmd_rsp.params.get_device_address.bd_addr_type;
+					addr_get = 1;
+					
+					Serial.print(F("Device address: "));
+					for(uint8_t i=0; i<BTLE_DEVICE_ADDRESS_SIZE-1; i++)
+					{
+						Serial.print(bd_addr_own[i], HEX);
+						Serial.print(":");
+					}
+					Serial.println(bd_addr_own[BTLE_DEVICE_ADDRESS_SIZE-1], HEX);
+					Serial.print(F("Device address type: "));
+					switch(bd_addr_type)
+					{
+						case ACI_BD_ADDR_TYPE_PUBLIC: Serial.println(F("Public address")); break;
+						case ACI_BD_ADDR_TYPE_RANDOM_STATIC: Serial.println(F("Random static address")); break;
+						case ACI_BD_ADDR_TYPE_RANDOM_PRIVATE_RESOLVABLE: Serial.println(F("Private resolvable address")); break;
+						case ACI_BD_ADDR_TYPE_RANDOM_PRIVATE_UNRESOLVABLE: Serial.println(F("Private unresolvable address")); break;
+						default: Serial.println(F("Invalid address"));
+					}
                 }
                 break;
 

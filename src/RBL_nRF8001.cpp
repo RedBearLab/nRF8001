@@ -92,11 +92,11 @@ static void process_events();
 /* Define how assert should function in the BLE library */
 void __ble_assert(const char *file, uint16_t line)
 {
-    Serial.print("ERROR ");
-    Serial.print(file);
-    Serial.print(": ");
-    Serial.print(line);
-    Serial.print("\n");
+    RBL_LOG("ERROR ");
+    RBL_LOG(file);
+    RBL_LOG(": ");
+    RBL_LOG(line);
+    RBL_LOG("\n");
     while(1);
 }
 
@@ -221,7 +221,7 @@ void ble_set_name(char *name)
     len = strlen(name);
     if(len > 10)
     {
-        Serial.print("the new name is too long");
+        RBL_LOG("the new name is too long");
     }
     else
     {
@@ -285,11 +285,11 @@ static void process_events()
                 {
                     case ACI_DEVICE_SETUP:
                         /* When the device is in the setup mode*/
-                        Serial.println(F("Evt Device Started: Setup"));
+                        RBL_LOGLN(F("Evt Device Started: Setup"));
                         setup_required = true;
                         break;
                     case ACI_DEVICE_STANDBY:
-                        Serial.println(F("Evt Device Started: Standby"));
+                        RBL_LOGLN(F("Evt Device Started: Standby"));
                         //Looking for an iPhone by sending radio advertisements
                         //When an iPhone connects to us we will get an ACI_EVT_CONNECTED event from the nRF8001
                         if (aci_evt->params.device_started.hw_error)
@@ -300,7 +300,7 @@ static void process_events()
                         {
                             lib_aci_set_local_data(&aci_state, PIPE_GAP_DEVICE_NAME_SET , (uint8_t *)&device_name , strlen(device_name));
                             lib_aci_connect(Adv_Timeout/* in seconds */, Adv_Interval /* advertising interval 50ms*/);
-                            Serial.println(F("Advertising started"));
+                            RBL_LOGLN(F("Advertising started"));
                         }
                         break;
                 }
@@ -313,10 +313,10 @@ static void process_events()
                     //ACI ReadDynamicData and ACI WriteDynamicData will have status codes of
                     //TRANSACTION_CONTINUE and TRANSACTION_COMPLETE
                     //all other ACI commands will have status code of ACI_STATUS_SCUCCESS for a successful command
-                    Serial.print(F("ACI Command "));
-                    Serial.println(aci_evt->params.cmd_rsp.cmd_opcode, HEX);
-                    Serial.print(F("Evt Cmd respone: Status "));
-                    Serial.println(aci_evt->params.cmd_rsp.cmd_status, HEX);
+                    RBL_LOG(F("ACI Command "));
+                    RBL_LOGLN(aci_evt->params.cmd_rsp.cmd_opcode, HEX);
+                    RBL_LOG(F("Evt Cmd respone: Status "));
+                    RBL_LOGLN(aci_evt->params.cmd_rsp.cmd_status, HEX);
                 }
                 if (ACI_CMD_GET_DEVICE_VERSION == aci_evt->params.cmd_rsp.cmd_opcode)
                 {
@@ -330,28 +330,28 @@ static void process_events()
                     bd_addr_type = aci_evt->params.cmd_rsp.params.get_device_address.bd_addr_type;
 					addr_get = 1;
 					
-					Serial.print(F("Device address: "));
+					RBL_LOG(F("Device address: "));
 					for(uint8_t i=0; i<BTLE_DEVICE_ADDRESS_SIZE-1; i++)
 					{
-						Serial.print(bd_addr_own[i], HEX);
-						Serial.print(":");
+						RBL_LOG(bd_addr_own[i], HEX);
+						RBL_LOG(":");
 					}
-					Serial.println(bd_addr_own[BTLE_DEVICE_ADDRESS_SIZE-1], HEX);
-					Serial.print(F("Device address type: "));
+					RBL_LOGLN(bd_addr_own[BTLE_DEVICE_ADDRESS_SIZE-1], HEX);
+					RBL_LOG(F("Device address type: "));
 					switch(bd_addr_type)
 					{
-						case ACI_BD_ADDR_TYPE_PUBLIC: Serial.println(F("Public address")); break;
-						case ACI_BD_ADDR_TYPE_RANDOM_STATIC: Serial.println(F("Random static address")); break;
-						case ACI_BD_ADDR_TYPE_RANDOM_PRIVATE_RESOLVABLE: Serial.println(F("Private resolvable address")); break;
-						case ACI_BD_ADDR_TYPE_RANDOM_PRIVATE_UNRESOLVABLE: Serial.println(F("Private unresolvable address")); break;
-						default: Serial.println(F("Invalid address"));
+						case ACI_BD_ADDR_TYPE_PUBLIC: RBL_LOGLN(F("Public address")); break;
+						case ACI_BD_ADDR_TYPE_RANDOM_STATIC: RBL_LOGLN(F("Random static address")); break;
+						case ACI_BD_ADDR_TYPE_RANDOM_PRIVATE_RESOLVABLE: RBL_LOGLN(F("Private resolvable address")); break;
+						case ACI_BD_ADDR_TYPE_RANDOM_PRIVATE_UNRESOLVABLE: RBL_LOGLN(F("Private unresolvable address")); break;
+						default: RBL_LOGLN(F("Invalid address"));
 					}
                 }
                 break;
 
             case ACI_EVT_CONNECTED:
                 is_connected = 1;
-                Serial.println(F("Evt Connected"));
+                RBL_LOGLN(F("Evt Connected"));
                 timing_change_done = false;
                 aci_state.data_credit_available = aci_state.data_credit_total;
                 /*Get the device version of the nRF8001 and store it in the Hardware Revision String*/
@@ -359,7 +359,7 @@ static void process_events()
                 break;
 
             case ACI_EVT_PIPE_STATUS:
-                Serial.println(F("Evt Pipe Status"));
+                RBL_LOGLN(F("Evt Pipe Status"));
                 if (lib_aci_is_pipe_available(&aci_state, PIPE_UART_OVER_BTLE_UART_TX_TX) && (false == timing_change_done))
                 {
                     lib_aci_change_timing_GAP_PPCP(); // change the timing on the link as specified in the nRFgo studio -> nRF8001 conf. -> GAP.
@@ -369,20 +369,20 @@ static void process_events()
                 break;
 
             case ACI_EVT_TIMING:
-                Serial.println(F("Evt link connection interval changed"));
+                RBL_LOGLN(F("Evt link connection interval changed"));
                 break;
 
             case ACI_EVT_DISCONNECTED:
                 is_connected = 0;
                 ack = 1;
-                Serial.println(F("Evt Disconnected/Advertising timed out"));
+                RBL_LOGLN(F("Evt Disconnected/Advertising timed out"));
                 lib_aci_connect(Adv_Timeout/* in seconds */, Adv_Interval /* advertising interval 50ms*/);
-                Serial.println(F("Advertising started"));
+                RBL_LOGLN(F("Advertising started"));
                 break;
 
             case ACI_EVT_DATA_RECEIVED:
-                Serial.print(F("Pipe Number: "));
-                Serial.println(aci_evt->params.data_received.rx_data.pipe_number, DEC);
+                RBL_LOG(F("Pipe Number: "));
+                RBL_LOGLN(aci_evt->params.data_received.rx_data.pipe_number, DEC);
                 for(int i=0; i<aci_evt->len - 2; i++)
                 {
                     if(rx_buffer_len == MAX_RX_BUFF)
@@ -404,18 +404,18 @@ static void process_events()
 
             case ACI_EVT_DATA_CREDIT:
                 aci_state.data_credit_available = aci_state.data_credit_available + aci_evt->params.data_credit.credit;
-                Serial.print("ACI_EVT_DATA_CREDIT     ");
-                Serial.print("Data Credit available: ");
-                Serial.println(aci_state.data_credit_available,DEC);
+                RBL_LOG("ACI_EVT_DATA_CREDIT     ");
+                RBL_LOG("Data Credit available: ");
+                RBL_LOGLN(aci_state.data_credit_available,DEC);
                 ack=1;
                 break;
 
             case ACI_EVT_PIPE_ERROR:
                 //See the appendix in the nRF8001 Product Specication for details on the error codes
-                Serial.print(F("ACI Evt Pipe Error: Pipe #:"));
-                Serial.print(aci_evt->params.pipe_error.pipe_number, DEC);
-                Serial.print(F("  Pipe Error Code: 0x"));
-                Serial.println(aci_evt->params.pipe_error.error_code, HEX);
+                RBL_LOG(F("ACI Evt Pipe Error: Pipe #:"));
+                RBL_LOG(aci_evt->params.pipe_error.pipe_number, DEC);
+                RBL_LOG(F("  Pipe Error Code: 0x"));
+                RBL_LOGLN(aci_evt->params.pipe_error.error_code, HEX);
 
                 //Increment the credit available as the data packet was not sent.
                 //The pipe error also represents the Attribute protocol Error Response sent from the peer and that should not be counted
@@ -424,27 +424,27 @@ static void process_events()
                 {
                     aci_state.data_credit_available++;
                 }
-                Serial.print("Data Credit available: ");
-                Serial.println(aci_state.data_credit_available,DEC);
+                RBL_LOG("Data Credit available: ");
+                RBL_LOGLN(aci_state.data_credit_available,DEC);
                 break;
 
             case ACI_EVT_HW_ERROR:
-                Serial.print(F("HW error: "));
-                Serial.println(aci_evt->params.hw_error.line_num, DEC);
+                RBL_LOG(F("HW error: "));
+                RBL_LOGLN(aci_evt->params.hw_error.line_num, DEC);
 
                 for(uint8_t counter = 0; counter <= (aci_evt->len - 3); counter++)
                 {
                   Serial.write(aci_evt->params.hw_error.file_name[counter]); //uint8_t file_name[20];
                 }
-                Serial.println();
+                RBL_LOGLN();
                 lib_aci_connect(Adv_Timeout/* in seconds */, Adv_Interval /* advertising interval 50ms*/);
-                Serial.println(F("Advertising started"));
+                RBL_LOGLN(F("Advertising started"));
                 break;
         }
     }
     else
     {
-        //Serial.println(F("No ACI Events available"));
+        //RBL_LOGLN(F("No ACI Events available"));
         // No event in the ACI Event queue and if there is no event in the ACI command queue the arduino can go to sleep
         // Arduino can go to sleep now
         // Wakeup from sleep from the RDYN line
@@ -480,19 +480,19 @@ void ble_do_events()
             {
                 if(true == lib_aci_send_data(PIPE_UART_OVER_BTLE_UART_TX_TX, &tx_buff[Index], 20))
                 {
-                    Serial.print("data transmmit success!  Length: ");
-                    Serial.print(20, DEC);
-                    Serial.print("    ");
+                    RBL_LOG("data transmmit success!  Length: ");
+                    RBL_LOG(20, DEC);
+                    RBL_LOG("    ");
                 }
                 else
                 {
-                    Serial.println("data transmmit fail !");
+                    RBL_LOGLN("data transmmit fail !");
                 }
                 tx_buffer_len -= 20;
                 Index += 20;
                 aci_state.data_credit_available--;
-                Serial.print("Data Credit available: ");
-                Serial.println(aci_state.data_credit_available,DEC);
+                RBL_LOG("Data Credit available: ");
+                RBL_LOGLN(aci_state.data_credit_available,DEC);
                 ack = 0;
                 while (!ack)
                     process_events();
@@ -500,18 +500,18 @@ void ble_do_events()
 
             if(true == lib_aci_send_data(PIPE_UART_OVER_BTLE_UART_TX_TX,& tx_buff[Index], tx_buffer_len))
             {
-                Serial.print("data transmmit success!  Length: ");
-                Serial.print(tx_buffer_len, DEC);
-                Serial.print("    ");
+                RBL_LOG("data transmmit success!  Length: ");
+                RBL_LOG(tx_buffer_len, DEC);
+                RBL_LOG("    ");
             }
             else
             {
-                Serial.println("data transmmit fail !");
+                RBL_LOGLN("data transmmit fail !");
             }
             tx_buffer_len = 0;
             aci_state.data_credit_available--;
-            Serial.print("Data Credit available: ");
-            Serial.println(aci_state.data_credit_available,DEC);
+            RBL_LOG("Data Credit available: ");
+            RBL_LOGLN(aci_state.data_credit_available,DEC);
             ack = 0;
             while (!ack)
                 process_events();

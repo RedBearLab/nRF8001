@@ -50,5 +50,13 @@ void ble_reset(uint8_t reset_pin);
 void ble_disconnect(void);
 void ble_get_mac_addr(uint8_t *bd_addr);
 
+#ifdef RBL_ENABLE_LOGGING
+# define RBL_LOG(...) Serial.print(__VA_ARGS__)
+# define RBL_LOGLN(...) Serial.println(__VA_ARGS__)
+#else
+# define RBL_LOG(...)
+# define RBL_LOGLN(...)
+#endif  // RBL_ENABLE_LOGGING
+
 #endif
 
